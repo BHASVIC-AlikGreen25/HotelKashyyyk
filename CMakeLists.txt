@@ -10,4 +10,5 @@ add_executable(HotelKashyyyk main.c
         dinnerTableBooking.c
         checkOut.h
         checkOut.c
-        userInfo.h)
+        userInfo.h
+        userInfo.c)
