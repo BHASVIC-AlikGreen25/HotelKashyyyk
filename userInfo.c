@@ -3,17 +3,29 @@
 #include <string.h>
 
 char bookingIDs[6][256] = {0};
+bool roomsAvailable[6] = {0};
 
-bool isRoomAvailable(int roomNumber)
+void checkoutRoom(const int roomNumber)
 {
-    return bookingIDs[roomNumber] == nullptr;
+    roomsAvailable[roomNumber] = true;
+}
+
+void checkInRoom(const char id[256], const int roomNumber)
+{
+    roomsAvailable[roomNumber] = false;
+    strcpy(bookingIDs[roomNumber], id);
+}
+
+bool isRoomAvailable(const int roomNumber)
+{
+    return roomsAvailable[roomNumber];
 }
 
 bool bookingIDExists(const char id[256])
 {
     for(int i = 0; i < 6; i++)
     {
-        if(strcmp(bookingIDs[i], id)) return true;
+        if(strcmp(bookingIDs[i], id) != 0) return true;
     }
 
     return false;

@@ -1,4 +1,1 @@
-#ifndef DINNERTABLEBOOKING_H
-#define DINNERTABLEBOOKING_H
-
-#endif
+#pragma once
