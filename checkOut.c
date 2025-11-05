@@ -1,5 +1,6 @@
 #include "checkOut.h"
 
-#include <stdio.h>
-
-
+void checkOut()
+{
+    // Do everything in here
+}
