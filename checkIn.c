@@ -88,11 +88,16 @@ void clearTerminal()
     }
 }
 
+
+
 void checkIn()
 {
+    setbuf(stdout, nullptr);
     int success = 0;
+
     char name[256];
     int birthDay, birthMonth, birthYear;
+    int numGuests;
 
 
     do
@@ -110,12 +115,22 @@ void checkIn()
     do
     {
         clearTerminal();
-        printf("\n======== CHECK IN ========\n\n");
+        printf("\n======== CHECK IN ========\n");
         printf("\nName: %s", name);
 
         printf("\nEnter your birth day (DD/MM/YYYY): ");
-        fflush(stdin);
         success = scanf("%d/%d/%d", &birthDay, &birthMonth, &birthYear);
 
-    }while (success != 3 || isValidBirthday(birthDay, birthMonth, birthYear));
+    }while (success != 3 || !isValidBirthday(birthDay, birthMonth, birthYear));
+
+    do
+    {
+        clearTerminal();
+        printf("\n======== CHECK IN ========\n");
+        printf("\nName: %s", name);
+        printf("\nDate of birth: %d/%d/%d", birthDay, birthMonth, birthYear);
+
+        printf("\nInput number of guests (1-4): ");
+        success = scanf("%d", &numGuests);
+    }while (success != 1 || numGuests < 1 || numGuests > 4);
 }
