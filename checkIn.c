@@ -1,9 +1,12 @@
 #include "checkIn.h"
 
 #include <ctype.h>
+#include <locale.h>
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+
+#include "userInfo.h"
 
 bool isValidName(const char *name)
 {
@@ -88,21 +91,46 @@ void clearTerminal()
     }
 }
 
+void displayRooms()
+{
+    printf("\n======== ROOM AVAILABILITY ========\n\n");
 
+    for(int i = 0; i < 6; i++) {
+        printf("  Room %d: ", 1 + i);
+
+        if(isRoomAvailable(i)) {
+            printf("[  AVAILABLE  ]\n");
+        } else {
+            printf("[   OCCUPIED  ]\n");
+        }
+    }
+
+    printf("\n==================================\n");
+}
 
 void checkIn()
 {
+    setlocale(LC_ALL, "");
     setbuf(stdout, nullptr);
+
+    if(!isAnyRoomAvailable()) return;
+
     int success = 0;
 
     char name[256];
     int birthDay, birthMonth, birthYear;
-    int numGuests;
+    int numAdults;
+    int numChildren;
+    int stayLength;
+    int boardType = -1;
+    bool dailyNewspaper;
 
 
     do
     {
         clearTerminal();
+        displayRooms();
+
         printf("\n======== CHECK IN ========\n");
 
         printf("\nEnter your name (first and surname): ");
@@ -130,7 +158,119 @@ void checkIn()
         printf("\nName: %s", name);
         printf("\nDate of birth: %d/%d/%d", birthDay, birthMonth, birthYear);
 
-        printf("\nInput number of guests (1-4): ");
-        success = scanf("%d", &numGuests);
-    }while (success != 1 || numGuests < 1 || numGuests > 4);
+        printf("\nInput number of adults (1-4): ");
+        success = scanf("%d", &numAdults);
+    }while (success != 1 || numAdults < 1 || numAdults > 4);
+
+    if(numAdults < 4)
+    {
+        do
+        {
+            clearTerminal();
+            printf("\n======== CHECK IN ========\n");
+            printf("\nName: %s", name);
+            printf("\nDate of birth: %d/%d/%d", birthDay, birthMonth, birthYear);
+            printf("\nNumber of adults: %d", numAdults);
+
+            printf("\nInput number of children (0-%d): ", 4-numAdults);
+            success = scanf("%d", &numChildren);
+        }while (success != 1 || numChildren < 1 || numChildren > 4-numAdults);
+    }else
+    {
+        numChildren = 0;
+    }
+
+    do
+    {
+        clearTerminal();
+        printf("\n======== CHECK IN ========\n");
+        printf("\nName: %s", name);
+        printf("\nDate of birth: %d/%d/%d", birthDay, birthMonth, birthYear);
+        printf("\nNumber of adults: %d", numAdults);
+        if(numChildren > 0) printf("\nNumber of children: %d", numChildren);
+
+        printf("\nInput length of stay (days): ");
+        success = scanf("%d", &stayLength);
+    }while (success != 1 || stayLength < 1);
+
+    do
+    {
+        clearTerminal();
+        printf("\n======== CHECK IN ========\n");
+        printf("\nName: %s", name);
+        printf("\nDate of birth: %d/%d/%d", birthDay, birthMonth, birthYear);
+        printf("\nNumber of adults: %d", numAdults);
+        if(numChildren > 0) printf("\nNumber of children: %d", numChildren);
+        printf("\nStay length: %d", stayLength);
+
+        char boardTypeStr[16];
+
+        printf("\n\nBoard types:");
+        wprintf(L"\n    Full board [FB] - £20");
+        wprintf(L"\n    Half board [HB] - £15");
+        wprintf(L"\n    B&B        [BB] - £5");
+        printf("\n\nInput type of board (FB, HB, BB): ");
+
+        fflush(stdin);
+        success = scanf("%s", &boardTypeStr);
+
+        if(strlen(boardTypeStr) != 2)
+        {
+            success = 0;
+            continue;
+        }
+
+        if(tolower(boardTypeStr[0]) == 'f') boardType = 0;
+        else if(tolower(boardTypeStr[0]) == 'h') boardType = 1;
+        else if(tolower(boardTypeStr[0]) == 'b') boardType = 2;
+    }while (success != 1 || boardType < 0);
+
+    do
+    {
+        clearTerminal();
+        printf("\n======== CHECK IN ========\n");
+        printf("\nName: %s", name);
+        printf("\nDate of birth: %d/%d/%d", birthDay, birthMonth, birthYear);
+        printf("\nNumber of adults: %d", numAdults);
+        if(numChildren > 0) printf("\nNumber of children: %d", numChildren);
+        printf("\nStay length: %d", stayLength);
+
+        const char* boardTypeFullName = "";
+        if(boardType == 0) boardTypeFullName = "Full board";
+        else if(boardType == 1) boardTypeFullName = "Half board";
+        else if(boardType == 2) boardTypeFullName = "Bed and breakfast";
+
+        printf("\nBoard type: %s", boardTypeFullName);
+
+        printf("\nWould you like a daily newspaper (Y/N): ");
+        char dailyNewspaperChar;
+        success = scanf("%c", &dailyNewspaperChar);
+        if(tolower(dailyNewspaperChar) == 'y') dailyNewspaper = true;
+        else if(tolower(dailyNewspaperChar) == 'n') dailyNewspaper = false;
+        else success = 0;
+
+    }while (success != 1 || numAdults < 1 || numAdults > 4);
+
+    do
+    {
+        clearTerminal();
+        printf("\n======== CHECK IN ========\n");
+        printf("\nName: %s", name);
+        printf("\nDate of birth: %d/%d/%d", birthDay, birthMonth, birthYear);
+        printf("\nNumber of adults: %d", numAdults);
+        if(numChildren > 0) printf("\nNumber of children: %d", numChildren);
+        printf("\nStay length: %d", stayLength);
+
+        const char* boardTypeFullName = "";
+        if(boardType == 0) boardTypeFullName = "Full board";
+        else if(boardType == 1) boardTypeFullName = "Half board";
+        else if(boardType == 2) boardTypeFullName = "Bed and breakfast";
+
+        printf("\nBoard type: %s\n\n", boardTypeFullName);
+
+        displayRooms();
+
+
+
+    }while (numAdults < 1 || numAdults > 4);
 }
