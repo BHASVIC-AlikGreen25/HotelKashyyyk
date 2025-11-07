@@ -2,17 +2,22 @@
 
 #include <string.h>
 
-char bookingIDs[6][256] = {};
-bool roomsAvailable[6] = {true, true, true, true, true, true};
+char      rooms_bookingId[6][256] = {};
+bool      rooms_available[6] = {true, true, true, true, true, true};
+BoardType rooms_boardType[6] = {};
+int       rooms_numAdults[6] = {};
+int       rooms_numChildldren[6] = {};
+int       rooms_age[6] = {};
+
 
 void checkoutRoom(const int roomNumber)
 {
-    roomsAvailable[roomNumber] = true;
+    rooms_available[roomNumber] = true;
 }
 
 void checkInRoom(const char id[256], const int roomNumber)
 {
-    roomsAvailable[roomNumber] = false;
+    rooms_available[roomNumber] = false;
     strcpy(bookingIDs[roomNumber], id);
 }
 
@@ -20,7 +25,7 @@ bool isAnyRoomAvailable()
 {
     for (int i = 0; i < 6; i++)
     {
-        if (roomsAvailable[i]) return true;
+        if (rooms_available[i]) return true;
     }
 
     return false;
@@ -28,15 +33,20 @@ bool isAnyRoomAvailable()
 
 bool isRoomAvailable(const int roomNumber)
 {
-    return roomsAvailable[roomNumber];
+    return rooms_available[roomNumber];
 }
 
 bool bookingIDExists(const char id[256])
 {
     for(int i = 0; i < 6; i++)
     {
-        if(strcmp(bookingIDs[i], id) != 0) return true;
+        if(strcmp(rooms_bookingId[i], id) != 0) return true;
     }
 
     return false;
+}
+
+BoardType getBoardType(const char id[256])
+{
+
 }
