@@ -20,3 +20,4 @@ int getStayLength(const char id[256]);
 int getNumAdults(const char id[256]);
 int getNumChildren(const char id[256]);
 int getAge(const char id[256]);
+bool hasDailyNewspaper(const char id[256]);

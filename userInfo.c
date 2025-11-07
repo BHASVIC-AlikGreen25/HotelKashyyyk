@@ -9,6 +9,7 @@ int       rooms_lengthStay[6] = {};
 int       rooms_numAdults[6] = {};
 int       rooms_numChildren[6] = {};
 int       rooms_age[6] = {};
+bool      rooms_dailyNewspaper[6] = {};
 
 
 void checkoutRoom(const int roomNumber)
@@ -69,7 +70,7 @@ BoardType getBoardType(const char id[256])
 int getStayLength(const char id[256])
 {
     const int roomNumber = getRoomNumber(id);
-    if(isRoomAvailable(roomNumber)) return FullBoard;
+    if(isRoomAvailable(roomNumber)) return -1;
 
     return rooms_lengthStay[roomNumber];
 }
@@ -77,7 +78,7 @@ int getStayLength(const char id[256])
 int getNumAdults(const char id[256])
 {
     const int roomNumber = getRoomNumber(id);
-    if(isRoomAvailable(roomNumber)) return FullBoard;
+    if(isRoomAvailable(roomNumber)) return -1;
 
     return rooms_numAdults[roomNumber];
 }
@@ -85,7 +86,7 @@ int getNumAdults(const char id[256])
 int getNumChildren(const char id[256])
 {
     const int roomNumber = getRoomNumber(id);
-    if(isRoomAvailable(roomNumber)) return FullBoard;
+    if(isRoomAvailable(roomNumber)) return -1;
 
     return rooms_numChildren[roomNumber];
 }
@@ -93,8 +94,16 @@ int getNumChildren(const char id[256])
 int getAge(const char id[256])
 {
     const int roomNumber = getRoomNumber(id);
-    if(isRoomAvailable(roomNumber)) return FullBoard;
+    if(isRoomAvailable(roomNumber)) return -1;
 
     return rooms_age[roomNumber];
+}
+
+bool hasDailyNewspaper(const char id[256])
+{
+    const int roomNumber = getRoomNumber(id);
+    if(isRoomAvailable(roomNumber)) return false;
+
+    return rooms_dailyNewspaper[roomNumber];
 }
 
