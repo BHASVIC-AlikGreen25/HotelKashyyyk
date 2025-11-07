@@ -18,7 +18,7 @@ void checkoutRoom(const int roomNumber)
 void checkInRoom(const char id[256], const int roomNumber)
 {
     rooms_available[roomNumber] = false;
-    strcpy(bookingIDs[roomNumber], id);
+    strcpy(rooms_bookingId[roomNumber], id);
 }
 
 bool isAnyRoomAvailable()
@@ -40,7 +40,7 @@ bool bookingIDExists(const char id[256])
 {
     for(int i = 0; i < 6; i++)
     {
-        if(strcmp(rooms_bookingId[i], id) != 0) return true;
+        if(strcmp(rooms_bookingId[i], id) == 0) return true;
     }
 
     return false;
