@@ -24,7 +24,7 @@ bool isValidName(const char *name)
     {
         const char c = name[i];
 
-        if (!isalnum(c) && c != ' ' && c != '-')
+        if (!isalpha(c) && c != ' ' && c != '-')
             return false; // If character is not alphanumeric or ' ' or '-' name is not valid
 
         if (c == ' ') // Handle spaces
@@ -110,12 +110,12 @@ void displayRooms()
 
 void checkIn()
 {
-    setlocale(LC_ALL, "");
     setbuf(stdout, nullptr);
+    setlocale(LC_ALL, "");
 
     if(!isAnyRoomAvailable()) return;
 
-    int success = 0;
+    int success;
 
     char name[256];
     int birthDay, birthMonth, birthYear;
@@ -123,13 +123,12 @@ void checkIn()
     int numChildren;
     int stayLength;
     int boardType = -1;
-    bool dailyNewspaper;
+    bool dailyNewspaper = false;
 
 
     do
     {
         clearTerminal();
-        displayRooms();
 
         printf("\n======== CHECK IN ========\n");
 
@@ -147,6 +146,7 @@ void checkIn()
         printf("\nName: %s", name);
 
         printf("\nEnter your birth day (DD/MM/YYYY): ");
+        fflush(stdin);
         success = scanf("%d/%d/%d", &birthDay, &birthMonth, &birthYear);
 
     }while (success != 3 || !isValidBirthday(birthDay, birthMonth, birthYear));
@@ -159,6 +159,7 @@ void checkIn()
         printf("\nDate of birth: %d/%d/%d", birthDay, birthMonth, birthYear);
 
         printf("\nInput number of adults (1-4): ");
+        fflush(stdin);
         success = scanf("%d", &numAdults);
     }while (success != 1 || numAdults < 1 || numAdults > 4);
 
@@ -173,6 +174,7 @@ void checkIn()
             printf("\nNumber of adults: %d", numAdults);
 
             printf("\nInput number of children (0-%d): ", 4-numAdults);
+            fflush(stdin);
             success = scanf("%d", &numChildren);
         }while (success != 1 || numChildren < 1 || numChildren > 4-numAdults);
     }else
@@ -190,6 +192,7 @@ void checkIn()
         if(numChildren > 0) printf("\nNumber of children: %d", numChildren);
 
         printf("\nInput length of stay (days): ");
+        fflush(stdin);
         success = scanf("%d", &stayLength);
     }while (success != 1 || stayLength < 1);
 
@@ -244,12 +247,13 @@ void checkIn()
 
         printf("\nWould you like a daily newspaper (Y/N): ");
         char dailyNewspaperChar;
+        fflush(stdin);
         success = scanf("%c", &dailyNewspaperChar);
         if(tolower(dailyNewspaperChar) == 'y') dailyNewspaper = true;
         else if(tolower(dailyNewspaperChar) == 'n') dailyNewspaper = false;
         else success = 0;
 
-    }while (success != 1 || numAdults < 1 || numAdults > 4);
+    }while (success != 1);
 
     do
     {
@@ -265,6 +269,9 @@ void checkIn()
         if(boardType == 0) boardTypeFullName = "Full board";
         else if(boardType == 1) boardTypeFullName = "Half board";
         else if(boardType == 2) boardTypeFullName = "Bed and breakfast";
+
+        if(dailyNewspaper) printf("\nDaily newspaper: Yes");
+        else printf("\nDaily newspaper: No");
 
         printf("\nBoard type: %s\n\n", boardTypeFullName);
 
