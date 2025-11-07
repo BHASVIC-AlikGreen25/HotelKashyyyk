@@ -43,7 +43,7 @@ bool bookingIDExists(const char id[256])
 {
     for(int i = 0; i < 6; i++)
     {
-        if(strcmp(rooms_bookingId[i], id) != 0) return true;
+        if(strcmp(rooms_bookingId[i], id) == 0) return true;
     }
 
     return false;
