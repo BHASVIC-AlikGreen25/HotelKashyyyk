@@ -3,7 +3,7 @@
 typedef enum {
     FullBoard,
     HalfBoard,
-    BedAndBreakfast
+    BnB
 } BoardType;
 
 void checkoutRoom(int roomNumber);
