@@ -11,7 +11,9 @@ void checkInRoom(const char id[256], int roomNumber);
 
 bool isAnyRoomAvailable();
 bool isRoomAvailable(int roomNumber);
-bool bookingIDExists(const char id[200]);
+bool bookingIDExists(const char id[256]);
+
+int getRoomNumber(const char id[256]);
 
 BoardType getBoardType(const char id[256]);
 int getStayLength(const char id[256]);
