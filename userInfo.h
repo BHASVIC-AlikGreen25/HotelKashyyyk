@@ -1,4 +1,8 @@
-#ifndef USERINFO_H
-#define USERINFO_H
+#pragma once
 
-#endif
+void checkoutRoom(int roomNumber);
+void checkInRoom(const char id[256], int roomNumber);
+
+bool isAnyRoomAvailable();
+bool isRoomAvailable(int roomNumber);
+bool bookingIDExists(const char id[200]);

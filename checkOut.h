@@ -1,6 +1,3 @@
-#ifndef CHECKOUT_H
-#define CHECKOUT_H
+#pragma once
 
-
-
-#endif
+void checkOut();

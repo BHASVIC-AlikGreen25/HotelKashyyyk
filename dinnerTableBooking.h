@@ -1,4 +1,3 @@
-#ifndef DINNERTABLEBOOKING_H
-#define DINNERTABLEBOOKING_H
+#pragma once
 
-#endif
+void dinnerTableBooking();

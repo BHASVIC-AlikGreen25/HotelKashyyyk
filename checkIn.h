@@ -1,5 +1,3 @@
-#ifndef CHECKIN_H
-#define CHECKIN_H
+#pragma once
 
-
-#endif
+void checkIn();
