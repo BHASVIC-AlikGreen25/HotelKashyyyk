@@ -11,13 +11,14 @@ void checkInRoom(const char id[256], int roomNumber);
 
 bool isAnyRoomAvailable();
 bool isRoomAvailable(int roomNumber);
-bool bookingIDExists(const char id[256]);
+bool bookingIDExists(char* id);
 
-int getRoomNumber(const char id[256]);
+int getRoomNumber(char* id);
 
-BoardType getBoardType(const char id[256]);
-int getStayLength(const char id[256]);
-int getNumAdults(const char id[256]);
-int getNumChildren(const char id[256]);
-int getAge(const char id[256]);
-bool hasDailyNewspaper(const char id[256]);
+BoardType getBoardType(char* id);
+const char* getBoardTypeAsString(char* id);
+int getStayLength(char* id);
+int getNumAdults(char* id);
+int getNumChildren(char* id);
+int getAge(char* id);
+bool hasDailyNewspaper(char* id);
