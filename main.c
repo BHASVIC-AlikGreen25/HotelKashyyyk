@@ -4,8 +4,8 @@
 
 int main(void)
 {
-    checkIn();
+    //checkIn();
     // dinnerTableBooking();
-    // checkOut();
+    checkOut();
     return 0;
 }
