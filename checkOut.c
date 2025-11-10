@@ -1,7 +1,6 @@
 #include "checkOut.h"
 #include <stdio.h>
 #include "userInfo.h"
-#include "checkIn.c"
 
 float g_totalCostRoom=0;
 float g_totalCostFood=0;
