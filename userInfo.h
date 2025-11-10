@@ -7,7 +7,14 @@ typedef enum {
 } BoardType;
 
 void checkoutRoom(int roomNumber);
-void checkInRoom(const char id[256], int roomNumber);
+void checkInRoom(char* id,
+                 int roomNumber,
+                 BoardType board,
+                 int stayLength,
+                 int adults,
+                 int children,
+                 int age,
+                 bool dailyNewspaper);
 
 bool isAnyRoomAvailable();
 bool isRoomAvailable(int roomNumber);
