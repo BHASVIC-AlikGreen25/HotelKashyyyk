@@ -81,7 +81,7 @@ int getRoomNumber(char* id)
     normalizeID(id);
     for(int i = 0; i < 6; i++)
     {
-        if(strcmp(rooms_bookingId[i], id) != 0) return i;
+        if(strcmp(rooms_bookingId[i], id) == 0) return i;
     }
 
     return -1;

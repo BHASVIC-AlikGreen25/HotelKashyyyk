@@ -5,7 +5,7 @@
 int main(void)
 {
     checkIn();
-    dinnerTableBooking();
+    // dinnerTableBooking();
     // checkOut();
     return 0;
 }
