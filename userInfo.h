@@ -29,3 +29,7 @@ int getNumAdults(char* id);
 int getNumChildren(char* id);
 int getAge(char* id);
 bool hasDailyNewspaper(char* id);
+
+void bookTable(int time, int table);
+bool isTableBooked(int time, int table);
+bool isAnyTableAvailable();
