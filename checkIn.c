@@ -65,36 +65,18 @@ typedef struct {
     uint64_t inc;
 } pcg32_random_t;
 
-uint32_t pcg32_random()
-{
-    static pcg32_random_t rng = {0, 0};
-
-    // Seed once using the current time
-    if (rng.state == 0 && rng.inc == 0) {
-        uint64_t t = (uint64_t)time(NULL);
-        rng.state = t ^ 0x853c49e6748fea9bULL;
-        rng.inc = (t << 1u) | 1u;
-    }
-
-    uint64_t oldstate = rng.state;
-    rng.state = oldstate * 6364136223846793005ULL + (rng.inc | 1);
-    uint32_t xorshifted = ((oldstate >> 18u) ^ oldstate) >> 27u;
-    uint32_t rot = oldstate >> 59u;
-    return (xorshifted >> rot) | (xorshifted << ((-rot) & 31));
-}
 
 int random(const int min, const int max)
 {
-    return (int)pcg32_random() % (max - min + 1) + min;
+    return rand() % (max - min + 1) + min;
 }
 
 const char* generateBookingId(const char* name, char* bookingId)
 {
     const char *surname = strrchr(name, ' ');
-    strcpy(bookingId, surname);
     const int num = random(0, 9999);
 
-    snprintf(bookingId, 256, "%s-%d", surname, num);
+    snprintf(bookingId, 256, "%s-%04d", &surname[1], num);
 
     return bookingId;
 }
@@ -327,7 +309,7 @@ void checkIn()
         else printf("\nDaily newspaper: No");
 
         displayRooms();
-
+        fflush(stdin);
         printf("Enter room number: ");
         success = scanf("%d", &roomNumber);
         roomNumber--;
@@ -353,7 +335,7 @@ void checkIn()
         if(dailyNewspaper) printf("\nDaily newspaper: Yes");
         else printf("\nDaily newspaper: No");
 
-        printf("\nRoom number: %d", roomNumber);
+        printf("\nRoom number: %d", roomNumber+1);
 
         printf("\nWould you like to confirm the booking (Y/N): ");
         fflush(stdin);
@@ -376,4 +358,7 @@ void checkIn()
         numChildren,
         age,
         dailyNewspaper);
+
+    printf("\nYour booking id: %s", bookingId);
+    printf("\nMake sure to write it down.");
 }
