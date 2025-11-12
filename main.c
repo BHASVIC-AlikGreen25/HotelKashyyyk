@@ -10,8 +10,8 @@ int main(void)
     setlocale(LC_ALL, "");
     setbuf(stdout, nullptr);
 
-    checkIn();
-    // dinnerTableBooking();
+    // checkIn();
+    dinnerTableBooking();
     // checkOut();
     return 0;
 }
