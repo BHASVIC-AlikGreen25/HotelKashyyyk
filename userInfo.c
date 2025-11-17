@@ -12,6 +12,8 @@ int       rooms_numChildren[6] = {};
 int       rooms_age[6] = {};
 bool      rooms_dailyNewspaper[6] = {};
 
+bool tables_available[2][3] = {};
+
 void normalizeID(char *id)
 {
     id[strcspn(id, "\n")] = 0;
@@ -156,5 +158,35 @@ bool hasDailyNewspaper(char* id)
     if(isRoomAvailable(roomNumber)) return false;
 
     return rooms_dailyNewspaper[roomNumber];
+}
+
+
+// Time should be 0 for 7pm booking or 1 for 9 pm booking
+// Table should be between 0 and 3 for the 3 tables
+void bookTable(const int time, const int table)
+{
+    if(table < 0 || table > 3 || time < 0 || time > 1) return;
+
+    tables_available[time][table] = true;
+}
+
+bool isTableBooked(const int time, const int table)
+{
+    if(table < 0 || table > 3 || time < 0 || time > 1) return false;
+
+    return tables_available[time][table];
+}
+
+bool isAnyTableAvailable()
+{
+    for(int i = 0; i < 2; i++)
+    {
+        for(int j = 0; j < 3; j++)
+        {
+            if(tables_available[i][j]) return true;
+        }
+    }
+
+    return false;
 }
 

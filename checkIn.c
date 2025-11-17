@@ -2,9 +2,12 @@
 
 #include <ctype.h>
 #include <locale.h>
+#include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <time.h>
+
 
 #include "userInfo.h"
 
@@ -56,13 +59,30 @@ bool isValidName(const char *name)
     return wordCount >= 2;
 }
 
-bool isValidBirthday(const int birthDay, const int birthMonth, const int birthYear)
-{
-    if (birthDay < 0 ||
-        birthMonth < 0 ||
-        birthMonth > 12 ||
-        birthYear < 1900) return false;
+// Random function copied from the internet
+typedef struct {
+    uint64_t state;
+    uint64_t inc;
+} pcg32_random_t;
 
+
+int random(const int min, const int max)
+{
+    return rand() % (max - min + 1) + min;
+}
+
+const char* generateBookingId(const char* name, char* bookingId)
+{
+    const char *surname = strrchr(name, ' ');
+    const int num = random(0, 9999);
+
+    snprintf(bookingId, 256, "%s-%04d", &surname[1], num);
+
+    return bookingId;
+}
+
+int calculateAge(const int birthDay, const int birthMonth, const int birthYear)
+{
     const time_t now = time(nullptr);
     const struct tm *currentTime = localtime(&now);
 
@@ -77,8 +97,19 @@ bool isValidBirthday(const int birthDay, const int birthMonth, const int birthYe
         // If birthday hasn't happened yet this year subtract one
         age--;
     }
+    return age;
+}
 
-    if(age < 18 || age > 150) return false;
+bool isValidBirthday(const int birthDay, const int birthMonth, const int birthYear)
+{
+    if (birthDay < 0 ||
+        birthMonth < 0 ||
+        birthMonth > 12 ||
+        birthYear < 1900) return false;
+
+    const int age = calculateAge(birthDay, birthMonth, birthYear);
+
+    if(age < 16 || age > 150) return false;
 
     return true;
 }
@@ -91,18 +122,22 @@ void clearTerminal()
     }
 }
 
+constexpr int roomPrices[6] = { 100, 100, 85, 75, 75, 50};
+
 void displayRooms()
 {
     printf("\n======== ROOM AVAILABILITY ========\n\n");
 
-    for(int i = 0; i < 6; i++) {
+    for(int i = 0; i < 6; i++)
+    {
         printf("  Room %d: ", 1 + i);
 
-        if(isRoomAvailable(i)) {
-            printf("[  AVAILABLE  ]\n");
-        } else {
-            printf("[   OCCUPIED  ]\n");
-        }
+        if(isRoomAvailable(i))
+            printf("[  AVAILABLE  ]");
+        else
+            printf("[   OCCUPIED  ]");
+
+        printf("  Price: £%d\n", roomPrices[i]);
     }
 
     printf("\n==================================\n");
@@ -110,9 +145,6 @@ void displayRooms()
 
 void checkIn()
 {
-    setbuf(stdout, nullptr);
-    setlocale(LC_ALL, "");
-
     if(!isAnyRoomAvailable()) return;
 
     int success;
@@ -125,6 +157,7 @@ void checkIn()
     int boardType = -1;
     bool dailyNewspaper = false;
     int roomNumber;
+    char confirm;
 
 
     do
@@ -159,7 +192,7 @@ void checkIn()
         printf("\nName: %s", name);
         printf("\nDate of birth: %d/%d/%d", birthDay, birthMonth, birthYear);
 
-        printf("\nInput number of adults (1-4): ");
+        printf("\nInput number of adults 16 or over (1-4): ");
         fflush(stdin);
         success = scanf("%d", &numAdults);
     }while (success != 1 || numAdults < 1 || numAdults > 4);
@@ -174,10 +207,10 @@ void checkIn()
             printf("\nDate of birth: %d/%d/%d", birthDay, birthMonth, birthYear);
             printf("\nNumber of adults: %d", numAdults);
 
-            printf("\nInput number of children (0-%d): ", 4-numAdults);
+            printf("\nInput number of children 15 or under (0-%d): ", 4-numAdults);
             fflush(stdin);
             success = scanf("%d", &numChildren);
-        }while (success != 1 || numChildren < 1 || numChildren > 4-numAdults);
+        }while (success != 1 || numChildren < 0 || numChildren > 4-numAdults);
     }else
     {
         numChildren = 0;
@@ -266,21 +299,66 @@ void checkIn()
         if(numChildren > 0) printf("\nNumber of children: %d", numChildren);
         printf("\nStay length: %d", stayLength);
 
-        const char* boardTypeFullName = "";
+        const char* boardTypeFullName;
         if(boardType == 0) boardTypeFullName = "Full board";
         else if(boardType == 1) boardTypeFullName = "Half board";
         else boardTypeFullName = "Bed and breakfast";
+        printf("\nBoard type: %s\n\n", boardTypeFullName);
 
         if(dailyNewspaper) printf("\nDaily newspaper: Yes");
         else printf("\nDaily newspaper: No");
 
-        printf("\nBoard type: %s\n\n", boardTypeFullName);
-
         displayRooms();
-
+        fflush(stdin);
         printf("Enter room number: ");
-        scanf("%d", &roomNumber);
+        success = scanf("%d", &roomNumber);
         roomNumber--;
 
-    }while (!isRoomAvailable(roomNumber));
+    }while (!isRoomAvailable(roomNumber) || success != 1);
+
+    do
+    {
+        clearTerminal();
+        printf("\n======== CHECK IN ========\n");
+        printf("\nName: %s", name);
+        printf("\nDate of birth: %d/%d/%d", birthDay, birthMonth, birthYear);
+        printf("\nNumber of adults: %d", numAdults);
+        if(numChildren > 0) printf("\nNumber of children: %d", numChildren);
+        printf("\nStay length: %d", stayLength);
+
+        const char* boardTypeFullName;
+        if(boardType == 0) boardTypeFullName = "Full board";
+        else if(boardType == 1) boardTypeFullName = "Half board";
+        else boardTypeFullName = "Bed and breakfast";
+        printf("\nBoard type: %s", boardTypeFullName);
+
+        if(dailyNewspaper) printf("\nDaily newspaper: Yes");
+        else printf("\nDaily newspaper: No");
+
+        printf("\nRoom number: %d", roomNumber+1);
+
+        printf("\nWould you like to confirm the booking (Y/N): ");
+        fflush(stdin);
+        scanf("%c", &confirm);
+
+        if(tolower(confirm) == 'n') return;
+
+    }while (tolower(confirm) != 'y');
+
+    char bookingId[256];
+    generateBookingId(name, bookingId);
+
+    const int age = calculateAge(birthDay, birthMonth, birthYear);
+    checkInRoom(
+        bookingId,
+        roomNumber,
+        boardType,
+        stayLength,
+        numAdults,
+        numChildren,
+        age,
+        dailyNewspaper);
+
+    printf("\nYour booking id: %s", bookingId);
+    printf("\nMake sure to write it down.");
 }
