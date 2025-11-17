@@ -25,12 +25,16 @@ void userId() {
     printf("=========Welcome to Check Out=========\n\nPlease enter your ID: ");
     scanf("%s",&g_id);
     fflush(stdin);
-    while(bookingIDExists(g_id)!=g_id){
-        printf("=========Welcome to Check Out=========\n\nPlease enter your ID: ");
+    do{
+        wprintf(L"=========Welcome to Check Out=========\n\nPlease enter your ID: ");
         scanf("%s",&g_id);
         fflush(stdin);
+        g_age=getAge(g_id);
+        g_days=getStayLength(g_id);
+        g_guestsAdults=getNumAdults(g_id);
+        g_guestsChildren=getNumChildren(g_id);
 
-    }
+    }while(bookingIDExists(g_id)==false);
 }
 void calculateFoodCost_Adults() {
     BoardType boardType=getBoardType(g_id);
@@ -84,6 +88,7 @@ void calculateFoodCost_Children(){
                 g_roomCost=50;
             break;
 
+
         }
         int age=getAge(g_id);
 
@@ -108,7 +113,7 @@ float g_grandTotal=0;
 
 void billDisplay(){
     g_grandTotal=g_newspaperCost+g_roomCost+g_foodCost;
-    printf("=============Bill=============\n\n Grand Total: £%f",g_grandTotal);
+    printf("=============Bill=============\n\n Grand Total: £%.2f\n Total food cost: £%.2f\n Room cost: £%.2f\n Newspaper costs: £%.2f",g_grandTotal,g_totalCostFood,g_totalCostRoom,g_newspaperCost);
 
 
 }
@@ -120,6 +125,8 @@ void checkOut() {
     calculateRoomCost();
     DailyNewspaperCost();
     billDisplay();
+
+
 
 }
 

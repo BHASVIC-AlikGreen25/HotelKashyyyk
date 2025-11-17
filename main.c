@@ -14,7 +14,7 @@ int main(void)
     srand(time(nullptr));
 
     checkIn();
-    dinnerTableBooking();
-    // checkOut();
+    //dinnerTableBooking();
+    checkOut();
     return 0;
 }
