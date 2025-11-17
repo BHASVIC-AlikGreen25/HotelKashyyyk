@@ -124,6 +124,7 @@ void checkIn()
     int stayLength;
     int boardType = -1;
     bool dailyNewspaper = false;
+    int roomNumber;
 
 
     do
@@ -241,7 +242,7 @@ void checkIn()
         const char* boardTypeFullName = "";
         if(boardType == 0) boardTypeFullName = "Full board";
         else if(boardType == 1) boardTypeFullName = "Half board";
-        else if(boardType == 2) boardTypeFullName = "Bed and breakfast";
+        else boardTypeFullName = "Bed and breakfast";
 
         printf("\nBoard type: %s", boardTypeFullName);
 
@@ -268,7 +269,7 @@ void checkIn()
         const char* boardTypeFullName = "";
         if(boardType == 0) boardTypeFullName = "Full board";
         else if(boardType == 1) boardTypeFullName = "Half board";
-        else if(boardType == 2) boardTypeFullName = "Bed and breakfast";
+        else boardTypeFullName = "Bed and breakfast";
 
         if(dailyNewspaper) printf("\nDaily newspaper: Yes");
         else printf("\nDaily newspaper: No");
@@ -277,7 +278,9 @@ void checkIn()
 
         displayRooms();
 
+        printf("Enter room number: ");
+        scanf("%d", &roomNumber);
+        roomNumber--;
 
-
-    }while (numAdults < 1 || numAdults > 4);
+    }while (!isRoomAvailable(roomNumber));
 }
