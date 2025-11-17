@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "userInfo.h"
 
+
 float g_totalCostRoom=0;
 float g_totalCostFood=0;
 float g_roomCost=0;
@@ -18,9 +19,18 @@ float g_foodCost=0;
 char g_id[256];
 
 
+
+
 void userId() {
     printf("=========Welcome to Check Out=========\n\nPlease enter your ID: ");
     scanf("%s",&g_id);
+    fflush(stdin);
+    while(bookingIDExists(g_id)!=g_id){
+        printf("=========Welcome to Check Out=========\n\nPlease enter your ID: ");
+        scanf("%s",&g_id);
+        fflush(stdin);
+
+    }
 }
 void calculateFoodCost_Adults() {
     BoardType boardType=getBoardType(g_id);
@@ -98,12 +108,20 @@ float g_grandTotal=0;
 
 void billDisplay(){
     g_grandTotal=g_newspaperCost+g_roomCost+g_foodCost;
-    printf("=============Bill=============\n\n Grand Total: £%f");
+    printf("=============Bill=============\n\n Grand Total: £%f",g_grandTotal);
 
 
 }
 
+void checkOut() {
+    userId();
+    calculateFoodCost_Adults();
+    calculateFoodCost_Children();
+    calculateRoomCost();
+    DailyNewspaperCost();
+    billDisplay();
 
+}
 
 
 
