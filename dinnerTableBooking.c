@@ -14,7 +14,7 @@ void dinnerTableBooking()
     setbuf(stdout, NULL);
     char  tmpbuf[30];
     strcpy( tmpbuf,"KING-1101" );
-    checkInRoom( tmpbuf, 3, BnB, 0, 0, 0, 0, 0); //Generate ID randomly later.
+    checkInRoom( tmpbuf, 3, FullBoard, 0, 0, 0, 0, 0); //Generate ID randomly later.
     char BookingID[256];
     char surname[999];
     do {
@@ -37,24 +37,34 @@ void dinnerTableBooking()
         printf("Unfortunately as you are currently booked in for Bed and Breakfast, you are not eligible to book a table. \n");
     }
     else {
-        printf("Please select a table from the following options: \n A) Endor(Seats 4 people) \n B) Naboo(Seats 4 people) \n C) Tatooine(Seats 4 people)");
+        printf("Please select a table from the following options: \n A) Endor(Seats 4 people) \n B) Naboo(Seats 4 people) \n C) Tatooine(Seats 4 people) \n");
         do {
-            switch (tolower(Table[98])) {
-                case 'A':
-                    printf("...");
-                    Valid = true;
-                    break;
-                case 'B':
-                    printf("..");
-                    Valid = true;
-                    break;
-                case 'C':
-                    printf(".");
-                    Valid = true;
-                    break;
-                default:
-                    printf("%s is not a valid table type, please try again! \n", Table);
-                    break;
+            printf("Input: ");
+            fflush(stdin);
+            fgets(Table, 99, stdin);
+            fflush(stdin);
+            if (strlen(Table) == 2) {
+                switch (tolower(Table[0])) {
+                    case 'a':
+                        printf("...");
+                        Valid = true;
+                        break;
+                    case 'b':
+                        printf("..");
+                        Valid = true;
+                        break;
+                    case 'c':
+                        printf(".");
+                        Valid = true;
+                        break;
+                    default:
+                        printf("%s is not a valid table type, please try again! \n", Table);
+                        break;
+                }
+            }
+            else {
+                printf("%s is not a valid table type, please try again! \n", Table);
+                Valid = false;
             }
         } while (Valid == false);
     }
