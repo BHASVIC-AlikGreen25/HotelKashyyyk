@@ -1,6 +1,8 @@
 #include "userInfo.h"
 
 #include <ctype.h>
+#include <io.h>
+#include <stdio.h>
 #include <string.h>
 
 bool      rooms_available[6] = {true, true, true, true, true, true};
@@ -165,14 +167,14 @@ bool hasDailyNewspaper(char* id)
 // Table should be between 0 and 3 for the 3 tables
 void bookTable(const int time, const int table)
 {
-    if(table < 0 || table > 3 || time < 0 || time > 1) return;
+    if(table < 0 || table > 2 || time < 0 || time > 1) return;
 
     tables_available[time][table] = true;
 }
 
 bool isTableBooked(const int time, const int table)
 {
-    if(table < 0 || table > 3 || time < 0 || time > 1) return false;
+    if(table < 0 || table > 2 || time < 0 || time > 1) return false;
 
     return tables_available[time][table];
 }
@@ -188,5 +190,43 @@ bool isAnyTableAvailable()
     }
 
     return false;
+}
+
+const char* filePath = "../data.txt";
+
+void save()
+{
+    FILE* file = fopen(filePath, "w");
+
+    for (int i=0; i<6; ++i)
+        fprintf(file, "room_avaliable:%d", rooms_available[0]);
+
+    for (int i=0; i<6; ++i)
+        fprintf(file, "room_age:%d", rooms_age[0]);
+
+    for (int i=0; i<6; ++i)
+        fprintf(file, "room_boardType:%d", rooms_boardType[0]);
+
+    for (int i=0; i<6; ++i)
+        fprintf(file, "room_dailyNewspaper:%d", rooms_dailyNewspaper[0]);
+
+    for (int i=0; i<6; ++i)
+        fprintf(file, "room_lengthStay:%d", rooms_lengthStay[0]);
+
+    for (int i=0; i<6; ++i)
+        fprintf(file, "room_numAdults:%d", rooms_numAdults[0]);
+
+    for (int i=0; i<6; ++i)
+        fprintf(file, "room_numChildren:%d", rooms_numChildren[0]);
+
+    for (int i=0; i<6; ++i)
+        fprintf(file, "room_bookingid:%s", rooms_bookingId[0]);
+
+    fclose(file);
+}
+
+void load()
+{
+
 }
 

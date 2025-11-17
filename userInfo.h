@@ -33,3 +33,6 @@ bool hasDailyNewspaper(char* id);
 void bookTable(int time, int table);
 bool isTableBooked(int time, int table);
 bool isAnyTableAvailable();
+
+void save();
+void load();
