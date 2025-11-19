@@ -13,11 +13,7 @@ void dinnerTableBooking()
     int Time = 0;
     int AmountOfPeople = 0;
     bool Valid1 = false;
-
-    setbuf(stdout, NULL);
-    checkInRoom(, 3, FullBoard, 0, 0, 0, 0, 0); //Generate ID randomly later.
     char BookingID[256];
-    char surname[999];
     do {
         printf("Please enter your BookingID: ");
         fflush(stdin);
