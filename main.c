@@ -6,6 +6,7 @@
 #include "checkIn.h"
 #include "checkOut.h"
 #include "dinnerTableBooking.h"
+#include "userInfo.h"
 
 int main(void)
 {
@@ -13,7 +14,8 @@ int main(void)
     setbuf(stdout, nullptr);
     srand(time(nullptr));
 
-    checkIn();
+    // checkIn();
+    load();
     dinnerTableBooking();
     // checkOut();
     return 0;

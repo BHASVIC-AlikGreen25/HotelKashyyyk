@@ -25,7 +25,7 @@ void userId() {
     printf("=========Welcome to Check Out=========\n\nPlease enter your ID: ");
     scanf("%s",&g_id);
     fflush(stdin);
-    while(bookingIDExists(g_id)!=g_id){
+    while(bookingIDExists(g_id)){
         printf("=========Welcome to Check Out=========\n\nPlease enter your ID: ");
         scanf("%s",&g_id);
         fflush(stdin);

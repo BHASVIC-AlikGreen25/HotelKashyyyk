@@ -159,6 +159,8 @@ void checkIn()
     int roomNumber;
     char confirm;
 
+    load();
+
 
     do
     {
