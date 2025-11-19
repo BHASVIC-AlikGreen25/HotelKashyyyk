@@ -14,7 +14,7 @@ int main(void)
     setbuf(stdout, nullptr);
     srand(time(nullptr));
 
-    // checkIn();
+    checkIn();
     load();
     dinnerTableBooking();
     // checkOut();
