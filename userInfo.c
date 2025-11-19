@@ -1,7 +1,6 @@
 #include "userInfo.h"
 
 #include <ctype.h>
-#include <io.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -69,17 +68,6 @@ bool isRoomAvailable(const int roomNumber)
     return rooms_available[roomNumber];
 }
 
-bool bookingIDExists(char* id)
-{
-    normalizeID(id);
-    for(int i = 0; i < 6; i++)
-    {
-        if(strcmp(rooms_bookingId[i], id) == 0) return true;
-    }
-
-    return false;
-}
-
 int getRoomNumber(char* id)
 {
     normalizeID(id);
@@ -91,6 +79,17 @@ int getRoomNumber(char* id)
     return -1;
 }
 
+bool bookingIDExists(char* id)
+{
+    normalizeID(id);
+    for(int i = 0; i < 6; i++)
+    {
+        if(rooms_available[i]) continue;
+        if(strcmp(rooms_bookingId[i], id) == 0) return true;
+    }
+
+    return false;
+}
 
 BoardType getBoardType(char* id)
 {
@@ -231,7 +230,7 @@ void save()
     for (int i=0; i<6; ++i)
     {
         if(rooms_bookingId[i][0] == 0)
-            fputs("\n", file);
+            fputs("none\n", file);
         else
             fputs(rooms_bookingId[i], file);
     }
@@ -272,8 +271,10 @@ void load()
         fscanf(file, "%d\n", &rooms_numChildren[i]);
 
     fscanf(file, "BookingIds:\n");
-    for (int i=0; i<6; ++i)
+    for (int i=0; i<6; ++i) {
         fgets(rooms_bookingId[i], 256, file);
+        normalizeID(rooms_bookingId[i]);
+    }
 
 
     fclose(file);
