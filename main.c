@@ -13,7 +13,7 @@ int main(void)
     setbuf(stdout, nullptr);
     srand(time(nullptr));
 
-    // checkIn();
+    checkIn();
     dinnerTableBooking();
     // checkOut();
     return 0;

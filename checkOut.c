@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "userInfo.h"
 
+
 float g_totalCostRoom=0;
 float g_totalCostFood=0;
 float g_roomCost=0;
@@ -18,9 +19,22 @@ float g_foodCost=0;
 char g_id[256];
 
 
+
+
 void userId() {
     printf("=========Welcome to Check Out=========\n\nPlease enter your ID: ");
     scanf("%s",&g_id);
+    fflush(stdin);
+    do{
+        wprintf(L"=========Welcome to Check Out=========\n\nPlease enter your ID: ");
+        scanf("%s",&g_id);
+        fflush(stdin);
+        g_age=getAge(g_id);
+        g_days=getStayLength(g_id);
+        g_guestsAdults=getNumAdults(g_id);
+        g_guestsChildren=getNumChildren(g_id);
+
+    }while(bookingIDExists(g_id)==false);
 }
 void calculateFoodCost_Adults() {
     BoardType boardType=getBoardType(g_id);
@@ -74,6 +88,7 @@ void calculateFoodCost_Children(){
                 g_roomCost=50;
             break;
 
+
         }
         int age=getAge(g_id);
 
@@ -98,12 +113,22 @@ float g_grandTotal=0;
 
 void billDisplay(){
     g_grandTotal=g_newspaperCost+g_roomCost+g_foodCost;
-    printf("=============Bill=============\n\n Grand Total: £%f");
+    printf("=============Bill=============\n\n Grand Total: £%.2f\n Total food cost: £%.2f\n Room cost: £%.2f\n Newspaper costs: £%.2f",g_grandTotal,g_totalCostFood,g_totalCostRoom,g_newspaperCost);
 
 
 }
 
+void checkOut() {
+    userId();
+    calculateFoodCost_Adults();
+    calculateFoodCost_Children();
+    calculateRoomCost();
+    DailyNewspaperCost();
+    billDisplay();
 
+
+
+}
 
 
 

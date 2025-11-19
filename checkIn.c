@@ -137,7 +137,7 @@ void displayRooms()
         else
             printf("[   OCCUPIED  ]");
 
-        printf("  Price: £%d\n", roomPrices[i]);
+        wprintf(L"  Price: £%d\n", roomPrices[i]);
     }
 
     printf("\n==================================\n");
@@ -251,7 +251,7 @@ void checkIn()
         fflush(stdin);
         success = scanf("%s", &boardTypeStr);
 
-        if(strlen(boardTypeStr) != 2)
+        if(strlen(boardTypeStr) != 2 || tolower(boardTypeStr[1]) != 'b')
         {
             success = 0;
             continue;
@@ -272,7 +272,7 @@ void checkIn()
         if(numChildren > 0) printf("\nNumber of children: %d", numChildren);
         printf("\nStay length: %d", stayLength);
 
-        const char* boardTypeFullName = "";
+        const char* boardTypeFullName;
         if(boardType == 0) boardTypeFullName = "Full board";
         else if(boardType == 1) boardTypeFullName = "Half board";
         else boardTypeFullName = "Bed and breakfast";
@@ -358,6 +358,8 @@ void checkIn()
         numChildren,
         age,
         dailyNewspaper);
+
+    save();
 
     printf("\nYour booking id: %s", bookingId);
     printf("\nMake sure to write it down.");
