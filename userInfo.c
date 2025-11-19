@@ -1,12 +1,11 @@
 #include "userInfo.h"
 
 #include <ctype.h>
-#include <io.h>
 #include <stdio.h>
 #include <string.h>
 
 bool      rooms_available[6] = {true, true, true, true, true, true};
-char      rooms_bookingId[6][256] = {};
+char      rooms_bookingId[6][256] = { };
 BoardType rooms_boardType[6] = {};
 int       rooms_lengthStay[6] = {};
 int       rooms_numAdults[6] = {};
@@ -69,17 +68,6 @@ bool isRoomAvailable(const int roomNumber)
     return rooms_available[roomNumber];
 }
 
-bool bookingIDExists(char* id)
-{
-    normalizeID(id);
-    for(int i = 0; i < 6; i++)
-    {
-        if(strcmp(rooms_bookingId[i], id) == 0) return true;
-    }
-
-    return false;
-}
-
 int getRoomNumber(char* id)
 {
     normalizeID(id);
@@ -89,6 +77,18 @@ int getRoomNumber(char* id)
     }
 
     return -1;
+}
+
+bool bookingIDExists(char* id)
+{
+    normalizeID(id);
+    for(int i = 0; i < 6; i++)
+    {
+        if(rooms_available[i]) continue;
+        if(strcmp(rooms_bookingId[i], id) == 0) return true;
+    }
+
+    return false;
 }
 
 BoardType getBoardType(char* id)
@@ -198,35 +198,85 @@ void save()
 {
     FILE* file = fopen(filePath, "w");
 
+    fprintf(file, "Available:\n");
     for (int i=0; i<6; ++i)
-        fprintf(file, "room_avaliable:%d", rooms_available[0]);
+        fprintf(file, "%d\n", rooms_available[i]);
 
+    fprintf(file, "Age:\n");
     for (int i=0; i<6; ++i)
-        fprintf(file, "room_age:%d", rooms_age[0]);
+        fprintf(file, "%d\n", rooms_age[i]);
 
+    fprintf(file, "BoardType:\n");
     for (int i=0; i<6; ++i)
-        fprintf(file, "room_boardType:%d", rooms_boardType[0]);
+        fprintf(file, "%d\n", rooms_boardType[i]);
 
+    fprintf(file, "DailyNewspaper:\n");
     for (int i=0; i<6; ++i)
-        fprintf(file, "room_dailyNewspaper:%d", rooms_dailyNewspaper[0]);
+        fprintf(file, "%d\n", rooms_dailyNewspaper[i]);
 
+    fprintf(file, "LengthStay:\n");
     for (int i=0; i<6; ++i)
-        fprintf(file, "room_lengthStay:%d", rooms_lengthStay[0]);
+        fprintf(file, "%d\n", rooms_lengthStay[i]);
 
+    fprintf(file, "Adults:\n");
     for (int i=0; i<6; ++i)
-        fprintf(file, "room_numAdults:%d", rooms_numAdults[0]);
+        fprintf(file, "%d\n", rooms_numAdults[i]);
 
+    fprintf(file, "Children:\n");
     for (int i=0; i<6; ++i)
-        fprintf(file, "room_numChildren:%d", rooms_numChildren[0]);
+        fprintf(file, "%d\n", rooms_numChildren[i]);
 
+    fprintf(file, "BookingIds:\n");
     for (int i=0; i<6; ++i)
-        fprintf(file, "room_bookingid:%s", rooms_bookingId[0]);
+    {
+        if(rooms_bookingId[i][0] == 0)
+            fputs("none\n", file);
+        else
+            fputs(rooms_bookingId[i], file);
+    }
 
     fclose(file);
 }
 
 void load()
 {
+    FILE* file = fopen(filePath, "r");
 
+    fscanf(file, "Available:\n");
+    for (int i=0; i<6; ++i)
+        fscanf(file, "%d\n", &rooms_available[i]);
+
+    fscanf(file, "Age:\n");
+    for (int i=0; i<6; ++i)
+        fscanf(file, "%d\n", &rooms_age[i]);
+
+    fscanf(file, "BoardType:\n");
+    for (int i=0; i<6; ++i)
+        fscanf(file, "%d\n", &rooms_boardType[i]);
+
+    fscanf(file, "DailyNewspaper:\n");
+    for (int i=0; i<6; ++i)
+        fscanf(file, "%d\n", &rooms_dailyNewspaper[i]);
+
+    fscanf(file, "LengthStay:\n");
+    for (int i=0; i<6; ++i)
+        fscanf(file, "%d\n", &rooms_lengthStay[i]);
+
+    fscanf(file, "Adults:\n");
+    for (int i=0; i<6; ++i)
+        fscanf(file, "%d\n", &rooms_numAdults[i]);
+
+    fscanf(file, "Children:\n");
+    for (int i=0; i<6; ++i)
+        fscanf(file, "%d\n", &rooms_numChildren[i]);
+
+    fscanf(file, "BookingIds:\n");
+    for (int i=0; i<6; ++i) {
+        fgets(rooms_bookingId[i], 256, file);
+        normalizeID(rooms_bookingId[i]);
+    }
+
+
+    fclose(file);
 }
 
