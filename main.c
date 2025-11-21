@@ -24,6 +24,8 @@ void main()
         printf("\n    C - Checkout user");
         printf("\n    D - Exit program");
         printf("\nChoice: ");
+
+        fflush(stdin);
         scanf("%c", &choice);
 
         switch(tolower(choice))
