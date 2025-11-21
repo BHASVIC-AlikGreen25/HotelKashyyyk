@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <windows.h>
+
 bool      rooms_available[6] = {true, true, true, true, true, true};
 char      rooms_bookingId[6][256] = { };
 BoardType rooms_boardType[6] = {};
@@ -192,11 +194,19 @@ bool isAnyTableAvailable()
     return false;
 }
 
-const char* filePath = "../data.txt";
 
 void save()
 {
-    FILE* file = fopen(filePath, "w");
+    FILE* file = fopen("data.txt", "w");
+
+    if(file == nullptr)
+    {
+        perror("Error opening file");
+        printf("\nSaving failed. Trying again.");
+        Sleep(1000);
+        save();
+        return;
+    }
 
     fprintf(file, "Available:\n");
     for (int i=0; i<6; ++i)
@@ -240,7 +250,7 @@ void save()
 
 void load()
 {
-    FILE* file = fopen(filePath, "r");
+    FILE* file = fopen("data.txt", "r");
 
     fscanf(file, "Available:\n");
     for (int i=0; i<6; ++i)
