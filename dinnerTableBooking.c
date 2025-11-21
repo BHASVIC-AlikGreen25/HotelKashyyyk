@@ -107,6 +107,7 @@ void dinnerTableBooking()
                     printf("21:00 (9PM) \n");
                 }
                 printf("Amount of People attending: %d", AmountOfPeople);
+                printf("=============================================================== \n");
             }
         } while (Valid1 == false);
     }
