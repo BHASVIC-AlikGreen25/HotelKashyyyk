@@ -3,122 +3,132 @@
 #include "userInfo.h"
 
 
-float g_totalCostRoom=0;
-float g_totalCostFood=0;
-float g_roomCost=0;
+//float totalCostRoom=0;
+//float totalCostFood=0;
+//float roomCost=0;
 
-BoardType boardType=FullBoard;
+//BoardType boardType=FullBoard;
 
-int g_age=0;
-const int g_pensioner=65;
-const int g_minor=16;
-int g_days=0;
-int g_guestsAdults=0;
-int g_guestsChildren=0;
-float g_foodCost=0;
-char g_id[256];
-
-
+//int age=0;
+constexpr int k_pensioner=65;
+constexpr int k_minor=16;
+//int days=0;
+//int guestsAdults=0;
+//int guestsChildren=0;
+//float foodCost=0;
+//char id[256];
 
 
-void userId() {
+
+
+void userId(char *id,int *age,int *days,int *guestAdults,int *guestChildren) {
     printf("=========Welcome to Check Out=========\n\nPlease enter your ID: ");
-    scanf("%s",&g_id);
+    scanf("%s",&id);
     fflush(stdin);
     do{
         wprintf(L"=========Welcome to Check Out=========\n\nPlease enter your ID: ");
-        scanf("%s",&g_id);
+        scanf("%s",&id);
         fflush(stdin);
-        g_age=getAge(g_id);
-        g_days=getStayLength(g_id);
-        g_guestsAdults=getNumAdults(g_id);
-        g_guestsChildren=getNumChildren(g_id);
+        *age=getAge(id);
+        *days=getStayLength(id);
+        *guestAdults=getNumAdults(id);
+        *guestChildren=getNumChildren(id);
 
-    }while(bookingIDExists(g_id)==false);
+    }while(bookingIDExists(id)==false);
+
 }
-void calculateFoodCost_Adults() {
-    BoardType boardType=getBoardType(g_id);
+float calculateFoodCost_Adults(float foodCost, int days, int guestsAdults, char id) {
+    float foodCostAdults=0;
+    BoardType boardType=getBoardType(id);
     switch(boardType) {
 
         case FullBoard:
-            g_foodCost=g_days*g_guestsAdults*20;
+            foodCostAdults=days*guestsAdults*20;
         break;
 
         case HalfBoard:
-            g_foodCost=g_days*g_guestsAdults*15;
+            foodCostAdults=days*guestsAdults*15;
         break;
 
         case BnB:
-            g_foodCost=g_days*g_guestsAdults*5;
+            foodCostAdults=days*guestsAdults*5;
         break;
 
     }
+    return foodCostAdults;
 }
-void calculateFoodCost_Children(){
-        switch(boardType) {
+float calculateFoodCost_Children(BoardType boardType, int days, int guestsChildren){
+    float foodCostChildren=0;
+    switch(boardType) {
             case FullBoard:
-                g_foodCost+=g_days*g_guestsChildren*20*0.5;
+                foodCostChildren=days*guestsChildren*20*0.5;
             break;
 
             case HalfBoard:
-                g_foodCost+=g_days*g_guestsChildren*15*0.5;
+                foodCostChildren=days*guestsChildren*15*0.5;
             break;
             case BnB:
-                g_foodCost+=g_days*g_guestsChildren*5*0.5;
+                foodCostChildren=days*guestsChildren*5*0.5;
             break;
 
-        }
+
+    }
+    return foodCostChildren;
 }
 
-    void calculateRoomCost() {
-        int roomNumber=getRoomNumber(g_id)+1;
+    float calculateRoomCost(char *id, float roomCost, int days, int age) {
+        int roomNumber=getRoomNumber(id)+1;
         switch(roomNumber) {
             case 1:
                 case 2:
-                g_roomCost=100*g_days;
+                roomCost=100*days;
             break;
             case 3:
-                g_roomCost=85*g_days;
+                roomCost=85*days;
             break;
             case 4:
                 case 5:
-                g_roomCost=75*g_days;
+                roomCost=75*days;
             break;
             case 6:
-                g_roomCost=50;
+                roomCost=50;
             break;
-
-
         }
-        int age=getAge(g_id);
+        int age=getAge(id);
 
-    if(age>=65) {
-            g_roomCost=g_roomCost*0.9;
+    if(age>=k_pensioner) {
+            roomCost=roomCost*0.9;
     }
 }
 
-float g_newspaperCost=0;
 
-void DailyNewspaperCost() {
-    if(hasDailyNewspaper(g_id)==true) {
-        g_newspaperCost+=5.50;
+
+float DailyNewspaperCost(char *id, float newspaperCost) {
+    float newspaperCost=0;
+    if(hasDailyNewspaper(id)==true) {
+        newspaperCost+=5.50;
 
     }
     else {
-        g_newspaperCost+=0;
+        newspaperCost+=0;
     }
+    return newspaperCost;
 }
 
 float g_grandTotal=0;
 
-void billDisplay(){
-    g_grandTotal=g_newspaperCost+g_roomCost+g_foodCost;
-    printf("=============Bill=============\n\n Grand Total: £%.2f\n Total food cost: £%.2f\n Room cost: £%.2f\n Newspaper costs: £%.2f",g_grandTotal,g_totalCostFood,g_totalCostRoom,g_newspaperCost);
-
+void billDisplay(float newspaperCost, float totalCostFood, float totalCostRoom){
+    g_grandTotal=newspaperCost+totalCostRoom+totalCostFood;
+    printf("=============Bill=============\n\n Grand Total: £%.2f\n",g_grandTotal);
+    printf("Total food cost: £%.2f\n",totalCostFood);
+    printf("Room cost: £%.2f\n",totalCostRoom);
+    printf("Newspaper costs: £%.2f",newspaperCost);
 
 }
 
 void checkOut() {
+
+
     userId();
     calculateFoodCost_Adults();
     calculateFoodCost_Children();
