@@ -195,7 +195,7 @@ bool isAnyTableAvailable()
 }
 
 
-void save()
+void  save()
 {
     FILE* file = fopen("data.txt", "w");
 
