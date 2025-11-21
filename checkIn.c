@@ -122,23 +122,36 @@ void clearTerminal()
     }
 }
 
+void printBar(const int length)
+{
+    for(int i = 0; i < length; i++)
+        printf("-");
+
+    printf("\n");
+}
+
 constexpr int roomPrices[6] = { 100, 100, 85, 75, 75, 50};
 
 void displayRooms()
 {
     printf("\n======== ROOM AVAILABILITY ========\n\n");
 
+
+    printBar(88);
+    printf("| Rooms        | Room 1    | Room 2    | Room 3    | Room 4    | Room 5    | Room 6    |\n");
+    printf("---------------+-----------+-----------+-----------+-----------+-----------+------------\n");
+    printf("| Availability |");
     for(int i = 0; i < 6; i++)
     {
-        printf("  Room %d: ", 1 + i);
-
         if(isRoomAvailable(i))
-            printf("[  AVAILABLE  ]");
+            printf(" AVAILABLE |");
         else
-            printf("[   OCCUPIED  ]");
-
-        wprintf(L"  Price: £%d\n", roomPrices[i]);
+            printf(" OCCUPIED  |");
     }
+    printf("\n");
+    printf(  "---------------+-----------+-----------+-----------+-----------+-----------+------------\n");
+    wprintf(L"| Price        | £100      | £100      | £85       | £75       | £75       | £50       |\n");
+    printBar(88);
 
     printf("\n==================================\n");
 }
