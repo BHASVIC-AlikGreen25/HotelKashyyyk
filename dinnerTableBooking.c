@@ -3,8 +3,16 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
+#include <windows.h>
 #include "userInfo.h"
+
+void ClearTerminal()
+{
+    for(int i = 0; i < 32; i++)
+    {
+        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+    }
+}
 
 void dinnerTableBooking()
 {
@@ -14,22 +22,23 @@ void dinnerTableBooking()
     int AmountOfPeople = 0;
     bool Valid1 = false;
     char BookingID[256];
+
+    ClearTerminal();
     do {
         printf("Please enter your BookingID: ");
         fflush(stdin);
         fgets(BookingID, sizeof(BookingID), stdin);
-        //BookingID[strcspn(BookingID, "\n")] = 0; //Add to BookingIDExists function later
         if (!bookingIDExists(BookingID)) {
             printf("BookingID '%s' does not exist, please try again! \n", BookingID);
         }
         else {
             printf("BookingID found \n");
-            sleep(1);
+            Sleep(500);
         }
     } while (!bookingIDExists(BookingID));
     const char* Board = getBoardTypeAsString(BookingID);
     printf("Your current board type is: %s \n", Board);
-    sleep(1);
+    Sleep(500);
     if (strcmp(Board, "BB") == 0) {
         printf("Unfortunately as you are currently booked in for Bed and Breakfast, you are not eligible to book a table. \n");
     }
@@ -37,8 +46,8 @@ void dinnerTableBooking()
         do {
             printf("Please select a table from the following options: \n A) Endor(Seats 4 people) \n B) Naboo(Seats 4 people) \n C) Tatooine(Seats 4 people) \n");
             fflush(stdin);
-            fgets(Table, 99, stdin);
             do {
+                fgets(Table, 99, stdin);
                 switch (tolower(Table[0])) {
                     case 'a':
                     case 'e':
@@ -79,14 +88,15 @@ void dinnerTableBooking()
             else {
                 for (int i = 0; i < 5; i++) {
                     printf(".");
-                    sleep(1);
+                    Sleep(300);
                 }
                 printf("\n");
                 Valid1 = true;
                 bookTable(Time, Table);
                 printf("Your table has been booked successfully! \n");
-                sleep(1);
+                Sleep(500);
                 printf("Booking view: \n");
+                printf("=============================================================== \n");
                 printf("Your BookingID: %s \n\n", BookingID);
                 printf("Your Table: %s \n", Table);
                 printf("Booking Time: ");

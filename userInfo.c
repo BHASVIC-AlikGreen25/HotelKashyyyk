@@ -194,7 +194,7 @@ bool isAnyTableAvailable()
 
 const char* filePath = "../data.txt";
 
-void save()
+void  save()
 {
     FILE* file = fopen(filePath, "w");
 
