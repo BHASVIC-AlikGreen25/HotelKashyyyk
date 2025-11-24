@@ -30,7 +30,6 @@ void normalizeID(char *id)
 void checkoutRoom(const int roomNumber)
 {
     rooms_available[roomNumber] = true;
-    rooms_available[roomNumber] = false;
     rooms_boardType[roomNumber] = FullBoard;
     rooms_lengthStay[roomNumber] = 0;
     rooms_numAdults[roomNumber] = 0;
