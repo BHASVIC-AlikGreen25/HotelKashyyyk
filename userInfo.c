@@ -37,6 +37,8 @@ void checkoutRoom(const int roomNumber)
     rooms_numChildren[roomNumber] = 0;
     rooms_age[roomNumber] = 0;
     rooms_dailyNewspaper[roomNumber] = false;
+
+    save();
 }
 
 // This changes id string
