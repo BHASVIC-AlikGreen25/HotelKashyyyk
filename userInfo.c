@@ -30,13 +30,14 @@ void normalizeID(char *id)
 void checkoutRoom(const int roomNumber)
 {
     rooms_available[roomNumber] = true;
-    rooms_available[roomNumber] = false;
     rooms_boardType[roomNumber] = FullBoard;
     rooms_lengthStay[roomNumber] = 0;
     rooms_numAdults[roomNumber] = 0;
     rooms_numChildren[roomNumber] = 0;
     rooms_age[roomNumber] = 0;
     rooms_dailyNewspaper[roomNumber] = false;
+
+    save();
 }
 
 // This changes id string

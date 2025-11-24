@@ -93,7 +93,7 @@ float calculateFoodCost_Children(BoardType boardType, int days, int guestsChildr
                 roomCost=75*days;
             break;
             case 6:
-                roomCost=50;
+                roomCost=50*days;
             break;
         }
         age=getAge(id);
@@ -154,6 +154,8 @@ void checkOut() {
     newspaperCost=DailyNewspaperCost(id);
     totalCostFood=foodCostAdults+foodCostChildren;
     billDisplay(newspaperCost,totalCostFood,totalCostRoom);
+    int roomNumber=getRoomNumber(id);
+    checkoutRoom(roomNumber);
 
 
 }
