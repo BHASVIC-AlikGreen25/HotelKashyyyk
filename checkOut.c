@@ -154,6 +154,8 @@ void checkOut() {
     newspaperCost=DailyNewspaperCost(id);
     totalCostFood=foodCostAdults+foodCostChildren;
     billDisplay(newspaperCost,totalCostFood,totalCostRoom);
+    int roomNumber=getRoomNumber(id);
+    checkoutRoom(roomNumber);
 
 
 }
