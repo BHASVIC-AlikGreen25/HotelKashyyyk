@@ -134,7 +134,7 @@ constexpr int roomPrices[6] = { 100, 100, 85, 75, 75, 50};
 
 void displayRooms()
 {
-    printf("\n======== ROOM AVAILABILITY ========\n\n");
+    printf("\n\n");
 
 
     printBar(88);
@@ -153,7 +153,7 @@ void displayRooms()
     wprintf(L"| Price        | £100      | £100      | £85       | £75       | £75       | £50       |\n");
     printBar(88);
 
-    printf("\n==================================\n");
+    printf("\n\n");
 }
 
 void checkIn()
