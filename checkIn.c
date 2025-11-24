@@ -243,7 +243,7 @@ void checkIn()
         printf("\nInput length of stay (days): ");
         fflush(stdin);
         success = scanf("%d", &stayLength);
-    }while (success != 1 || stayLength < 1);
+    }while (success != 1 || stayLength < 1 || stayLength > 1000);
 
     do
     {
