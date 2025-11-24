@@ -21,23 +21,25 @@ constexpr int k_minor=16;
 
 
 
-void userId(char *id,int *age,int *days,int *guestAdults,int *guestChildren) {
-    printf("=========Welcome to Check Out=========\n\nPlease enter your ID: ");
-    scanf("%s",&id);
-    fflush(stdin);
+void userId(char *id,int *age,int *days,int *guestsAdults,int *guestsChildren) {
+
     do{
         wprintf(L"=========Welcome to Check Out=========\n\nPlease enter your ID: ");
-        scanf("%s",&id);
         fflush(stdin);
-        *age=getAge(id);
-        *days=getStayLength(id);
-        *guestAdults=getNumAdults(id);
-        *guestChildren=getNumChildren(id);
+        scanf("%s",id);
+
+        if(bookingIDExists(id)==true)
+        {
+            *age=getAge(id);
+            *days=getStayLength(id);
+            *guestsAdults=getNumAdults(id);
+            *guestsChildren=getNumChildren(id);
+        }
 
     }while(bookingIDExists(id)==false);
 
 }
-float calculateFoodCost_Adults(float foodCost, int days, int guestsAdults, char id) {
+float calculateFoodCost_Adults( int days, int guestsAdults, char *id) {
     float foodCostAdults=0;
     BoardType boardType=getBoardType(id);
     switch(boardType) {
@@ -94,16 +96,17 @@ float calculateFoodCost_Children(BoardType boardType, int days, int guestsChildr
                 roomCost=50;
             break;
         }
-        int age=getAge(id);
+        age=getAge(id);
 
     if(age>=k_pensioner) {
             roomCost=roomCost*0.9;
     }
+    return roomCost;
 }
 
 
 
-float DailyNewspaperCost(char *id, float newspaperCost) {
+float DailyNewspaperCost(char *id) {
     float newspaperCost=0;
     if(hasDailyNewspaper(id)==true) {
         newspaperCost+=5.50;
@@ -127,15 +130,30 @@ void billDisplay(float newspaperCost, float totalCostFood, float totalCostRoom){
 }
 
 void checkOut() {
+    char id[256];
+    int age=0;
+    int days=0;
+    int guestsAdults=0;
+    int guestsChildren=0;
+    float foodCost=0.0;
+    BoardType boardType=getBoardType(id);
+    float foodCostAdults=0.0;
+    float foodCostChildren=0.0;
+    float roomCost=0.0;
+    float newspaperCost=0.0;
+    float totalCostFood=0.0;
+    float totalCostRoom=0.0;
 
 
-    userId();
-    calculateFoodCost_Adults();
-    calculateFoodCost_Children();
-    calculateRoomCost();
-    DailyNewspaperCost();
-    billDisplay();
 
+
+    userId(id,&age,&days,&guestsAdults,&guestsChildren);
+    foodCostAdults=calculateFoodCost_Adults(days,guestsAdults,id);
+    foodCostChildren=calculateFoodCost_Children(boardType,days,guestsChildren);
+    totalCostRoom=calculateRoomCost(id,roomCost,days,age);
+    newspaperCost=DailyNewspaperCost(id);
+    totalCostFood=foodCostAdults+foodCostChildren;
+    billDisplay(newspaperCost,totalCostFood,totalCostRoom);
 
 
 }
