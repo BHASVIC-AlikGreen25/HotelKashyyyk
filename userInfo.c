@@ -242,7 +242,10 @@ void  save()
         if(rooms_bookingId[i][0] == 0)
             fputs("none\n", file);
         else
-            fputs(rooms_bookingId[i]+"\n", file);
+        {
+            fputs(rooms_bookingId[i], file);
+            fputs("\n", file);
+        }
     }
 
     fclose(file);
