@@ -30,6 +30,13 @@ void normalizeID(char *id)
 void checkoutRoom(const int roomNumber)
 {
     rooms_available[roomNumber] = true;
+    rooms_available[roomNumber] = false;
+    rooms_boardType[roomNumber] = FullBoard;
+    rooms_lengthStay[roomNumber] = 0;
+    rooms_numAdults[roomNumber] = 0;
+    rooms_numChildren[roomNumber] = 0;
+    rooms_age[roomNumber] = 0;
+    rooms_dailyNewspaper[roomNumber] = false;
 }
 
 // This changes id string
@@ -242,7 +249,10 @@ void  save()
         if(rooms_bookingId[i][0] == 0)
             fputs("none\n", file);
         else
+        {
             fputs(rooms_bookingId[i], file);
+            fputs("\n", file);
+        }
     }
 
     fclose(file);
