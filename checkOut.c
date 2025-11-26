@@ -122,11 +122,11 @@ float g_grandTotal=0;
 
 void billDisplay(float newspaperCost, float totalCostFood, float totalCostRoom){
     g_grandTotal=newspaperCost+totalCostRoom+totalCostFood;
-    printf("=============Bill=============\n\n Grand Total: £%.2f\n",g_grandTotal);
+    printf("=============Bill=============\n\nGrand Total: £%.2f\n",g_grandTotal);
     printf("Total food cost: £%.2f\n",totalCostFood);
     printf("Room cost: £%.2f\n",totalCostRoom);
     printf("Newspaper costs: £%.2f",newspaperCost);
-
+    printf("==============================");
 }
 
 void checkOut() {
