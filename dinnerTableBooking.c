@@ -70,9 +70,15 @@ void dinnerTableBooking()
                         break;
                 }
             } while (Valid == false);
-            printf("Please enter the time of your Booking: \n Enter 0 for 7PM \n Enter 1 for 9PM \n");
-            fflush(stdin);
-            scanf("%d", &Time);
+            do {
+                printf("Please enter the time of your Booking: \n Enter 0 for 7PM \n Enter 1 for 9PM \n");
+                fflush(stdin);
+                scanf("%d", &Time);
+                if (Time != 0 && Time != 1) {
+                    printf("This is an invalid input, try again!");
+                }
+            } while (Time != 0 && Time != 1);
+
             do {
                 printf("How many people will be coming with you today? \n");
                 fflush(stdin);
@@ -80,7 +86,10 @@ void dinnerTableBooking()
                 if (AmountOfPeople > 4) {
                     printf("Unfortunately you can only seat 4 people at the table. Please try again! \n");
                 }
-            } while (AmountOfPeople > 4);
+                else if (AmountOfPeople < 1) {
+                    printf("This is an invalid amount of people!");
+                }
+            } while (AmountOfPeople > 4 || AmountOfPeople < 1);
             if (isTableBooked(Time, Table) == true) {
                 printf("Unfortunately the table you selected is booked for that time. Please select another booking \n");
                 Valid1 = false;
